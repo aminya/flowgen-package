@@ -7,6 +7,7 @@
   "bin": "./bin/flowgen-package.js",
   "main": "./src/flowgen-package.js",
   "scripts": {
+    "lint": "eslint --fix .",
     "format": "prettier --write .",
     "test": "node ./bin/flowgen-package.js --packageName semver --bundlePath ./test/semver.js --typesInstallScript \"pnpm install --save-dev @types/semver\""
   },
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@types/semver": "^7.3.5",
+    "eslint-config-atomic": "^1.14.3",
     "prettier-config-atomic": "^2.0.4"
   }
 }
