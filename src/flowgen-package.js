@@ -110,7 +110,7 @@ function transformImportStar(fileContent) {
   return fileContent.replace(importStarRegex, "import typeof * as $1 from $2;")
 }
 
-const importNamedRegex = /^\s*import\s*\{(.*)\}\s*from\s*(.*)\s*;?\s*$/g
+const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/g
 
 /**
  * Transform `import { } as from ""` to `import type {} * as from ""`
@@ -129,10 +129,9 @@ function transformImportNamed(fileContent) {
  * @param {string} moduleName The name of the module for that file
  */
 function wrapDeclareFile(fileContent, moduleName) {
-  fileContent = `declare module "${moduleName}" {
+  return `declare module "${moduleName}" {
 ${indent(fileContent, 2)}
 }`
-  return fileContent
 }
 
 /**
