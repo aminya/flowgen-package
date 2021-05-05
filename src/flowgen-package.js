@@ -99,7 +99,7 @@ const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/gm
  * @param {string} fileContent
  */
 function transformImportRequire(fileContent) {
-  return fileContent.replace(importRequireRegex, "import $1 from $2;")
+  return fileContent.replace(importRequireRegex, "import type $1 from $2;")
 }
 
 const importDefaultRegex = /^\s*import\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
@@ -110,18 +110,18 @@ const importDefaultRegex = /^\s*import\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
  * @param {string} fileContent
  */
 function transformImportDefault(fileContent) {
-  return fileContent.replace(importDefaultRegex, "import typeof * as $1 from $2;")
+  return fileContent.replace(importDefaultRegex, "import type $1 from $2;")
 }
 
 const importStarRegex = /^\s*import\s*\*\s*as\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
- * Transform `import * as from ""` to `import typeof * as from ""`
+ * Transform `import * as from ""` to `import type * as from ""`
  *
  * @param {string} fileContent
  */
 function transformImportStar(fileContent) {
-  return fileContent.replace(importStarRegex, "import typeof * as $1 from $2;")
+  return fileContent.replace(importStarRegex, "import type * as $1 from $2;")
 }
 
 const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/gm
