@@ -67,6 +67,7 @@ async function flowgenPackage(givenOptions) {
     let outputFileContent = transformImportRequire(fileContent)
     outputFileContent = compiler.compileDefinitionString(outputFileContent)
 
+    outputFileContent = transformImportDefault(outputFileContent)
     outputFileContent = transformImportStar(outputFileContent)
     outputFileContent = transformImportNamed(outputFileContent)
 
@@ -99,6 +100,17 @@ const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/gm
  */
 function transformImportRequire(fileContent) {
   return fileContent.replace(importRequireRegex, "import $1 from $2;")
+}
+
+const importDefaultRegex = /^\s*import\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
+
+/**
+ * Transform `import something as from ""` to `import type something from ""`
+ *
+ * @param {string} fileContent
+ */
+function transformImportDefault(fileContent) {
+  return fileContent.replace(importDefaultRegex, "import typeof * as $1 from $2;")
 }
 
 const importStarRegex = /^\s*import\s*\*\s*as\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
