@@ -90,7 +90,7 @@ function readFiles(filesPaths) {
   return Promise.all(filesPaths.map((filePath) => readFile(filePath, { encoding: "utf-8" })))
 }
 
-const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/g
+const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/gm
 
 /**
  * Transform `import = require` to `import from`
@@ -101,7 +101,7 @@ function transformImportRequire(fileContent) {
   return fileContent.replace(importRequireRegex, "import $1 from $2;")
 }
 
-const importStarRegex = /^\s*import\s*\*\s*as\s*(\S*)\s*from\s*(.*)\s*;?\s*$/g
+const importStarRegex = /^\s*import\s*\*\s*as\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
  * Transform `import * as from ""` to `import typeof * as from ""`
@@ -112,7 +112,7 @@ function transformImportStar(fileContent) {
   return fileContent.replace(importStarRegex, "import typeof * as $1 from $2;")
 }
 
-const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/g
+const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
  * Transform `import { } as from ""` to `import type {} * as from ""`
