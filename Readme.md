@@ -3,6 +3,7 @@
 Generate Flow types for all the TypeScript definitions in a package
 
 ### CLI
+
 ```
 flowgen-package --packageName semver --bundlePath ./semver.js.flow
 flowgen-package --packageName semver --bundlePath ./semver.js.flow --packageDir "./node_modules/some_package"
@@ -21,7 +22,6 @@ Options:
   --packageDir <packageDir>        If given instead of installing `@types/packageName`, the types for this package are generated
   -h, --help                                 display help for command
 ```
-
 
 ## JavsScirpt API
 
