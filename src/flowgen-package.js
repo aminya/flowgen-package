@@ -167,7 +167,7 @@ function indent(fileContent, indentLength) {
 async function bundleFiles(fileContents, bundlePath) {
   try {
     await ensureFile(bundlePath)
-  } catch (err) {}
+  } catch (err) { /* ignore */ }
   const bundleContent = fileContents.join("\n\n")
   await writeFile(bundlePath, bundleContent)
 }
