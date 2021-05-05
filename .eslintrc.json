@@ -1,4 +1,4 @@
 {
   "extends": "eslint-config-atomic",
-  "ignorePatterns": ["dist/", "node_modules/", "test/semver.js"]
+  "ignorePatterns": ["dist/", "node_modules/", "test/fixtures"]
 }
