@@ -1,5 +1,5 @@
 const glob = require("fast-glob")
-const { promises } = require("fs")
+const { promises, ensureFile } = require("fs-extra")
 const { readFile, writeFile } = promises
 const { join, relative, resolve } = require("path")
 const { compiler } = require("flowgen")
@@ -153,6 +153,9 @@ function indent(fileContent, indentLength) {
  * @param {string} bundlePath Generate a bundle suitable for FlowTyped at this path
  */
 async function bundleFiles(fileContents, bundlePath) {
+  try {
+    await ensureFile(bundlePath)
+  } catch (err) {}
   const bundleContent = fileContents.join("\n\n")
   await writeFile(bundlePath, bundleContent)
 }
