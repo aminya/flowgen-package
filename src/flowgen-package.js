@@ -39,7 +39,7 @@ async function flowgenPackage(givenOptions) {
     console.log(`Generating flow definitions for ${packageName} at ${packageDir}`)
   }
   if (!options.bundlePath) {
-    options.bundlePath = join(packageDir, `./${packageName}.js`)
+    options.bundlePath = join(packageDir, `./${packageName}.js.flow`)
   }
   const filePaths = await glob(`**/*.d.ts`, {
     ignore: `${packageDir.replace(/\\/g, "/")}/**/node_modules/`,
@@ -57,7 +57,7 @@ async function flowgenPackage(givenOptions) {
     const filePath = filePaths[iFile]
     const fileContent = fileContents[iFile]
 
-    const outputFilePath = filePath.replace(/.d.ts$/, ".js")
+    const outputFilePath = filePath.replace(/.d.ts$/, ".js.flow")
     let moduleName = join(packageName, relative(packageDir, outputFilePath)).replace(/\\/g, "/")
     // declare module the package itself instead of its index
     if (moduleName === `${packageName}/index.js`) {

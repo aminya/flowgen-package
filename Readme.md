@@ -4,9 +4,9 @@ Generate Flow types for all the TypeScript definitions in a package
 
 ### CLI
 ```
-flowgen-package --packageName semver --bundlePath ./semver.js
-flowgen-package --packageName semver --bundlePath ./semver.js --packageDir "./node_modules/some_package"
-flowgen-package --packageName semver --bundlePath ./semver.js --typesInstallScript "pnpm install --save-dev @types/semver"
+flowgen-package --packageName semver --bundlePath ./semver.js.flow
+flowgen-package --packageName semver --bundlePath ./semver.js.flow --packageDir "./node_modules/some_package"
+flowgen-package --packageName semver --bundlePath ./semver.js.flow --typesInstallScript "pnpm install --save-dev @types/semver"
 ```
 
 ```
