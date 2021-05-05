@@ -56,7 +56,11 @@ async function flowgenPackage(givenOptions) {
     const fileContent = fileContents[iFile]
 
     const outputFilePath = filePath.replace(/.d.ts$/, ".js")
-    const moduleName = join(packageName, relative(packageDir, outputFilePath)).replace(/\\/g, "/")
+    let moduleName = join(packageName, relative(packageDir, outputFilePath)).replace(/\\/g, "/")
+    // declare module the package itself instead of its index
+    if (moduleName === `${packageName}/index.js`) {
+      moduleName = packageName
+    }
 
     let outputFileContent = transformImportRequire(fileContent)
     outputFileContent = compiler.compileDefinitionString(outputFileContent)
