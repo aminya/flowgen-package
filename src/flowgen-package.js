@@ -51,6 +51,8 @@ async function flowgenPackage(givenOptions) {
     throw new Error(`No .d.ts files were found at ${packageDir}`)
   }
   const fileContents = await readFiles(filePaths)
+
+  const writeFilePromises = []
   for (let iFile = 0, numFile = filePaths.length; iFile < numFile; iFile++) {
     const filePath = filePaths[iFile]
     const fileContent = fileContents[iFile]
@@ -72,9 +74,9 @@ async function flowgenPackage(givenOptions) {
 
     fileContents[iFile] = outputFileContent
 
-    await writeFile(outputFilePath, outputFileContent)
+    writeFilePromises.push(writeFile(outputFilePath, outputFileContent))
   }
-
+  await Promise.all(writeFilePromises)
   await bundleFiles(fileContents, options.bundlePath)
   return "Success"
 }
