@@ -43,7 +43,7 @@ For more information and options see the following:
  * @property {string | undefined} bundlePath Generate a bundle suitable for FlowTyped at this path
  * @property {string | undefined} typesInstallScript The install script used to install `@types/packageName`. By default
  *   npm install is used
- * @property {string | undefined} packageDirGiven If given instead of installing `@types/packageName`, the types for
+ * @property {string | undefined} packageDir If given instead of installing `@types/packageName`, the types for
  *   this package are generated
  */
 
