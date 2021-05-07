@@ -16,6 +16,10 @@ program
     "--packageDir <packageDir>",
     "If given instead of installing `@types/packageName`, the types for this package are generated"
   )
+  .option(
+    "--beautify",
+    "Beautify the output"
+  )
 
 if (process.argv.length <= 2) {
   program.help()

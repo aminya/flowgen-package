@@ -11,15 +11,15 @@ flowgen-package --packageName semver --bundlePath ./semver.js.flow --typesInstal
 ```
 
 ```
-❯ node ./bin/flowgen-package.js
-Usage:  [options]
+Usage: flowgen-package [options]
 
 Options:
   -V, --version                              output the version number
   --packageName <packageName>                The name of the package
   --bundlePath <bundlePath>                  Generate a bundle suitable for FlowTyped at this path
   --typesInstallScript <typesInstallScript>  The install script used to install `@types/packageName`. By default npm install is used
-  --packageDir <packageDir>        If given instead of installing `@types/packageName`, the types for this package are generated
+  --packageDir <packageDir>                  If given instead of installing `@types/packageName`, the types for this package are generated
+  --beautify                                 Beautify the output
   -h, --help                                 display help for command
 ```
 
