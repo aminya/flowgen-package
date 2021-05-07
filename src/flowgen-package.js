@@ -57,6 +57,8 @@ async function flowgenPackage(givenOptions) {
     const filePath = filePaths[iFile]
     const fileContent = fileContents[iFile]
 
+    console.log(`Processing ${filePath}`)
+
     const outputFilePath = filePath.replace(/.d.ts$/, ".js.flow")
     let moduleName = join(packageName, relative(packageDir, outputFilePath.replace(".js.flow", ".js"))).replace(/\\/g, "/")
     // declare module the package itself instead of its index
@@ -78,7 +80,10 @@ async function flowgenPackage(givenOptions) {
     writeFilePromises.push(writeFile(outputFilePath, outputFileContent))
   }
   await Promise.all(writeFilePromises)
+
+  console.log(`Generating bundle at ${options.bundlePath}`)
   await bundleFiles(fileContents, options.bundlePath)
+
   return "Success"
 }
 exports.flowgenPackage = flowgenPackage
@@ -167,7 +172,9 @@ function indent(fileContent, indentLength) {
 async function bundleFiles(fileContents, bundlePath) {
   try {
     await ensureFile(bundlePath)
-  } catch (err) { /* ignore */ }
+  } catch (err) {
+    /* ignore */
+  }
   const bundleContent = fileContents.join("\n\n")
   await writeFile(bundlePath, bundleContent)
 }
