@@ -1,7 +1,7 @@
 const glob = require("fast-glob")
 const { promises, ensureFile } = require("fs-extra")
 const { readFile, writeFile } = promises
-const { join, relative, resolve } = require("path")
+const { join, relative, resolve, isAbsolute, dirname } = require("path")
 const { compiler } = require("flowgen")
 const { execSync } = require("child_process")
 
@@ -60,7 +60,9 @@ async function flowgenPackage(givenOptions) {
     console.log(`Processing ${filePath}`)
 
     const outputFilePath = filePath.replace(/.d.ts$/, ".js.flow")
-    let moduleName = join(packageName, relative(packageDir, outputFilePath.replace(".js.flow", ".js"))).replace(/\\/g, "/")
+    const resolvedFile = relativizeAbsolutePath(packageDir, outputFilePath)
+    let moduleName = `${packageName}/${resolvedFile}`
+
     // declare module the package itself instead of its index
     if (moduleName === `${packageName}/index.js`) {
       moduleName = packageName
@@ -72,6 +74,7 @@ async function flowgenPackage(givenOptions) {
     outputFileContent = transformImportDefault(outputFileContent)
     outputFileContent = transformImportStar(outputFileContent)
     outputFileContent = transformImportNamed(outputFileContent)
+    outputFileContent = transformRelativeImports(outputFileContent, outputFilePath, packageName, packageDir)
 
     outputFileContent = wrapDeclareFile(outputFileContent, moduleName)
 
@@ -94,6 +97,20 @@ exports.flowgenPackage = flowgenPackage
  */
 function readFiles(filesPaths) {
   return Promise.all(filesPaths.map((filePath) => readFile(filePath, { encoding: "utf-8" })))
+}
+
+/**
+ * If the path is absolute, it will become relative to rootPath, otherwise it will be kept as is
+ *
+ * @param {string} rootPath
+ * @param {string} pathToRelativize
+ * @returns {string}
+ */
+function relativizeAbsolutePath(rootPath, pathToRelativize) {
+  if (isAbsolute(pathToRelativize)) {
+    return relative(rootPath, pathToRelativize.replace(".js.flow", ".js")).replace(/\\/g, "/")
+  }
+  return pathToRelativize
 }
 
 const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/gm
@@ -138,6 +155,33 @@ const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/gm
  */
 function transformImportNamed(fileContent) {
   return fileContent.replace(importNamedRegex, "import type $1 from $2")
+}
+
+const importFromRegex = /^\s*import\s*(.*)\s*from\s*["'](.*)["']\s*;?\s*$/gm
+
+/** @param {string} filePath */
+function isRelative(filePath) {
+  return /\.\.?\//.test(filePath) // starts with ./ or ../
+  // TODO we don't test for 'lib/something'
+}
+
+/**
+ * @param {string} fileContent
+ * @param {string} outputFilePath
+ * @param {string} packageName
+ * @param {string} packageDir
+ */
+function transformRelativeImports(fileContent, outputFilePath, packageName, packageDir) {
+  return fileContent.replace(importFromRegex, (importStatement, importedSymbols, importPath) => {
+    if (isRelative(importPath)) {
+      const resolvedPath = resolve(dirname(outputFilePath), importPath)
+      const relativePath = relativizeAbsolutePath(packageDir, resolvedPath)
+      return `import ${importedSymbols} from "${packageName}/${relativePath}"`
+    } else {
+      // leave as is if not relative
+      return importStatement
+    }
+  })
 }
 
 /**
