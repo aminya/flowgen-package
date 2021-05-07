@@ -168,7 +168,7 @@ const importFromRegex = /^\s*import\s*(.*)\s*from\s*["'](.*)["']\s*;?\s*$/gm
 
 /** @param {string} filePath */
 function isRelative(filePath) {
-  return /\.\.?\//.test(filePath) // starts with ./ or ../
+  return /\.\.?\/?/.test(filePath) // starts with ./ or ../ or . or ..
   // TODO we don't test for 'lib/something'
 }
 
