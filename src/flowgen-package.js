@@ -20,7 +20,7 @@ let beautify
 /**
  * Generate Flow types from @types package
  *
- * @param {Options} options See the above for the documentation of options
+ * @param {Options} givenOptions See the above for the documentation of options
  */
 async function flowgenPackage(givenOptions) {
   const options = givenOptions
