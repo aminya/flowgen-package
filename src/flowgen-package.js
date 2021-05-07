@@ -199,7 +199,8 @@ function transformRelativeImports(fileContent, outputFilePath, packageName, pack
  * @param {string} moduleName The name of the module for that file
  */
 function wrapDeclareFile(fileContent, moduleName) {
-  return `declare module "${moduleName}" {
+  return `// Generated from @types/${moduleName} using github.com/aminya/flowgen-package
+declare module "${moduleName}" {
 ${indent(fileContent, 2)}
 }`
 }
