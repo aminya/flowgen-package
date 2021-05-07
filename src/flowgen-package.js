@@ -73,6 +73,7 @@ async function flowgenPackage(givenOptions) {
     outputFileContent = transformImportDefault(outputFileContent)
     outputFileContent = transformImportStar(outputFileContent)
     outputFileContent = transformImportNamed(outputFileContent)
+    outputFileContent = transformExportType(outputFileContent)
     outputFileContent = transformRelativeImports(outputFileContent, outputFilePath, packageName, packageDir)
 
     if (options.beautify) {
@@ -162,6 +163,17 @@ const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/gm
  */
 function transformImportNamed(fileContent) {
   return fileContent.replace(importNamedRegex, "import type $1 from $2")
+}
+
+const exportTypeRegex = /^\s*export\s*(type|interface)/gm
+
+/**
+ * Transform `export type/interface` to `declare export type/interface`
+ *
+ * @param {string} fileContent
+ */
+function transformExportType(fileContent) {
+  return fileContent.replace(exportTypeRegex, "declare export $1")
 }
 
 const importFromRegex = /^\s*import\s*(.*)\s*from\s*["'](.*)["']\s*;?\s*$/gm
