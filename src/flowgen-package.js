@@ -191,7 +191,7 @@ function transformRelativeImports(fileContent, outputFilePath, packageName, pack
       const resolvedPath = resolve(dirname(outputFilePath), importPath)
       const relativePath = relativizeAbsolutePath(packageDir, resolvedPath)
       const moduleName = relativePath === "index" ? packageName : `${packageName}/${relativePath}`
-      return `import ${importedSymbols} from "${moduleName}"`
+      return `import ${importedSymbols.trim()} from "${moduleName}"`
     } else {
       // leave as is if not relative
       return importStatement
