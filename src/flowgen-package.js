@@ -76,14 +76,14 @@ async function flowgenPackage(givenOptions) {
     outputFileContent = transformExportType(outputFileContent)
     outputFileContent = transformRelativeImports(outputFileContent, outputFilePath, packageName, packageDir)
 
+    outputFileContent = wrapDeclareFile(outputFileContent, moduleName)
+
     if (options.beautify) {
       if (beautify === undefined) {
         beautify = require("prettier").format
       }
       outputFileContent = beautify(outputFileContent, { semi: false, parser: "flow" })
     }
-
-    outputFileContent = wrapDeclareFile(outputFileContent, moduleName)
 
     fileContents[iFile] = outputFileContent
 
