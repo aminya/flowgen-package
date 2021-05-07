@@ -58,7 +58,7 @@ async function flowgenPackage(givenOptions) {
     const filePath = filePaths[iFile]
     const fileContent = fileContents[iFile]
 
-    console.log(`Processing ${filePath}`)
+    console.log(`Generating flow types from ${filePath}`)
 
     const outputFilePath = filePath.replace(/.d.ts$/, ".js.flow")
     const resolvedFile = relativizeAbsolutePath(packageDir, outputFilePath)
