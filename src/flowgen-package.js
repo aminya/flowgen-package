@@ -14,7 +14,7 @@ let beautify
  *   npm install is used
  * @property {string | undefined} packageDir If given instead of installing `@types/packageName`, the types for this
  *   package are generated
- * @property {boolean} beautify beautify the output
+ * @property {boolean} beautify Beautify the output
  */
 
 /**
