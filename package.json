@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint --fix .",
     "format": "prettier --write .",
-    "test": "node ./bin/flowgen-package.js --packageName semver --bundlePath ./test/fixtures/semver.js.flow --beautify --typesInstallScript \"pnpm install --save-dev @types/semver\""
+    "test": "node ./bin/flowgen-package.js --packageName semver --bundlePath ./test/fixtures/semver.js.flow --typesInstallScript \"pnpm install --save-dev @types/semver\""
   },
   "prettier": "prettier-config-atomic",
   "dependencies": {

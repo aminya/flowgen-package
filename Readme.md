@@ -8,7 +8,6 @@ Generate Flow types for all the TypeScript definitions in a package
 flowgen-package --packageName semver --bundlePath ./semver.js.flow
 flowgen-package --packageName semver --bundlePath ./semver.js.flow --packageDir "./node_modules/some_package"
 flowgen-package --packageName semver --bundlePath ./semver.js.flow --typesInstallScript "pnpm install --save-dev @types/semver"
-flowgen-package --packageName semver --bundlePath ./semver.js.flow --beautify
 ```
 
 ```
@@ -20,7 +19,6 @@ Options:
   --bundlePath <bundlePath>                  Generate a bundle suitable for FlowTyped at this path
   --typesInstallScript <typesInstallScript>  The install script used to install `@types/packageName`. By default npm install is used
   --packageDir <packageDir>                  If given instead of installing `@types/packageName`, the types for this package are generated
-  --beautify                                 Beautify the output
   -h, --help                                 display help for command
 ```
 
@@ -46,7 +44,6 @@ For more information and options see the following:
  *   npm install is used
  * @property {string | undefined} packageDir If given instead of installing `@types/packageName`, the types for this
  *   package are generated
- * @property {boolean} beautify Beautify the output
  */
 
 /**

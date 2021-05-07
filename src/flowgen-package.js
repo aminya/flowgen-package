@@ -4,7 +4,7 @@ const { readFile, writeFile } = promises
 const { join, relative, resolve, isAbsolute, dirname } = require("path")
 const { compiler } = require("flowgen")
 const { execSync } = require("child_process")
-let beautify
+const { format } = require("prettier")
 
 /**
  * @typedef {object} Options
@@ -14,7 +14,6 @@ let beautify
  *   npm install is used
  * @property {string | undefined} packageDir If given instead of installing `@types/packageName`, the types for this
  *   package are generated
- * @property {boolean} beautify Beautify the output
  */
 
 /**
@@ -70,6 +69,9 @@ async function flowgenPackage(givenOptions) {
     let outputFileContent = transformImportRequire(fileContent)
     outputFileContent = compiler.compileDefinitionString(outputFileContent)
 
+    // we should format because Flowgen generates wrongly formatted code which results in an error
+    outputFileContent = format(outputFileContent, { parser: "babel-flow" })
+
     outputFileContent = transformImportDefault(outputFileContent)
     outputFileContent = transformImportStar(outputFileContent)
     outputFileContent = transformImportNamed(outputFileContent)
@@ -77,13 +79,6 @@ async function flowgenPackage(givenOptions) {
     outputFileContent = transformRelativeImports(outputFileContent, outputFilePath, packageName, packageDir)
 
     outputFileContent = wrapDeclareFile(outputFileContent, moduleName)
-
-    if (options.beautify) {
-      if (beautify === undefined) {
-        beautify = require("prettier").format
-      }
-      outputFileContent = beautify(outputFileContent, { semi: false, parser: "flow" })
-    }
 
     fileContents[iFile] = outputFileContent
 
