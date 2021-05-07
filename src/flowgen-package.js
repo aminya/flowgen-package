@@ -119,7 +119,7 @@ function relativizeAbsolutePath(rootPath, pathToRelativize) {
 const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/gm
 
 /**
- * Transform `import = require` to `import from`
+ * Transform `import x = require(y)` to `import type x from y`
  *
  * @param {string} fileContent
  */
@@ -130,7 +130,7 @@ function transformImportRequire(fileContent) {
 const importDefaultRegex = /^\s*import\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
- * Transform `import something as from ""` to `import type something from ""`
+ * Transform `import x from "y"` to `import type x from "y"`
  *
  * @param {string} fileContent
  */
@@ -141,7 +141,7 @@ function transformImportDefault(fileContent) {
 const importStarRegex = /^\s*import\s*\*\s*as\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
- * Transform `import * as from ""` to `import type * as from ""`
+ * Transform `import * as x from "y"` to `import type * as x from "y"`
  *
  * @param {string} fileContent
  */
@@ -152,7 +152,7 @@ function transformImportStar(fileContent) {
 const importNamedRegex = /^\s*import\s*{(.*)}\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
- * Transform `import { } as from ""` to `import type {} * as from ""`
+ * Transform `import { x } as y from "z"` to `import type { x } * as y from "z"`
  *
  * @param {string} fileContent
  */
@@ -163,7 +163,7 @@ function transformImportNamed(fileContent) {
 const exportTypeRegex = /^\s*export\s*(type|interface)/gm
 
 /**
- * Transform `export type/interface` to `declare export type/interface`
+ * Transform `export type/interface x` to `declare export type/interface x`
  *
  * @param {string} fileContent
  */
