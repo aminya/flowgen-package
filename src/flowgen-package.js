@@ -61,12 +61,9 @@ async function flowgenPackage(givenOptions) {
 
     const outputFilePath = filePath.replace(/.d.ts$/, ".js.flow")
     const resolvedFile = relativizeAbsolutePath(packageDir, outputFilePath)
-    let moduleName = `${packageName}/${resolvedFile}`
 
     // declare module the package itself instead of its index
-    if (moduleName === `${packageName}/index.js`) {
-      moduleName = packageName
-    }
+    const moduleName = resolvedFile === "index" ? packageName : `${packageName}/${resolvedFile}`
 
     let outputFileContent = transformImportRequire(fileContent)
     outputFileContent = compiler.compileDefinitionString(outputFileContent)
@@ -108,7 +105,8 @@ function readFiles(filesPaths) {
  */
 function relativizeAbsolutePath(rootPath, pathToRelativize) {
   if (isAbsolute(pathToRelativize)) {
-    return relative(rootPath, pathToRelativize.replace(".js.flow", ".js")).replace(/\\/g, "/")
+    // TODO we remove extention altogether
+    return relative(rootPath, pathToRelativize.replace(".js.flow", "")).replace(/\\/g, "/")
   }
   return pathToRelativize
 }
@@ -176,7 +174,7 @@ function transformRelativeImports(fileContent, outputFilePath, packageName, pack
     if (isRelative(importPath)) {
       const resolvedPath = resolve(dirname(outputFilePath), importPath)
       const relativePath = relativizeAbsolutePath(packageDir, resolvedPath)
-      const moduleName = (relativePath === "index") ? packageName : `${packageName}/${relativePath}`
+      const moduleName = relativePath === "index" ? packageName : `${packageName}/${relativePath}`
       return `import ${importedSymbols} from "${moduleName}"`
     } else {
       // leave as is if not relative
