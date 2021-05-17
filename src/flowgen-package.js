@@ -130,12 +130,12 @@ function transformImportRequire(fileContent) {
 const importDefaultRegex = /^\s*import\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
 
 /**
- * Transform `import x from "y"` to `import type x from "y"`
+ * Transform `import x from "y"` to `import type * as x from "y"`
  *
  * @param {string} fileContent
  */
 function transformImportDefault(fileContent) {
-  return fileContent.replace(importDefaultRegex, "import type $1 from $2")
+  return fileContent.replace(importDefaultRegex, "import type * as $1 from $2")
 }
 
 const importStarRegex = /^\s*import\s*\*\s*as\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
