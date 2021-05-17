@@ -119,12 +119,12 @@ function relativizeAbsolutePath(rootPath, pathToRelativize) {
 const importRequireRegex = /^\s*import\s*(\S*)\s*=\s*require\((.*)\);?\s*$/gm
 
 /**
- * Transform `import x = require(y)` to `import type x from y`
+ * Transform `import x = require(y)` to `import type * as x from y`
  *
  * @param {string} fileContent
  */
 function transformImportRequire(fileContent) {
-  return fileContent.replace(importRequireRegex, "import type $1 from $2")
+  return fileContent.replace(importRequireRegex, "import type * as $1 from $2")
 }
 
 const importDefaultRegex = /^\s*import\s*(\S*)\s*from\s*(.*)\s*;?\s*$/gm
